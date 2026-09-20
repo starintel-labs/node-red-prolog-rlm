@@ -1,0 +1,41 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  node-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Deterministic node suite
+        run: node --test
+
+  live-lane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install SWI-Prolog
+        run: sudo apt-get update && sudo apt-get install -y swi-prolog
+      - name: Checkout prolog-rlm runtime
+        run: git clone --depth 1 https://github.com/lost-rob0t/prolog-rlm.git ../prolog-rlm
+      - name: Live demo lane (no credentials)
+        run: RLM_E2E=1 RLM_HOME=$GITHUB_WORKSPACE/../prolog-rlm node --test
+
+  nix-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - name: Flake check
+        run: nix flake check

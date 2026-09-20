@@ -1,0 +1,45 @@
+<script type="text/javascript">
+    RED.nodes.registerType('rlm', {
+        category: 'prolog-rlm',
+        color: '#9b59b6',
+        defaults: {
+            name: { value: '' },
+            runtime: { type: 'prolog-rlm-runtime', required: true },
+            query: { value: '' },
+            context: { value: '' }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'bridge.svg',
+        label: function () {
+            return this.name || 'rlm';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="rlm">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-runtime"><i class="fa fa-server"></i> Runtime</label>
+        <input type="text" id="node-input-runtime">
+    </div>
+    <div class="form-row">
+        <label for="node-input-query"><i class="fa fa-question"></i> Query</label>
+        <input type="text" id="node-input-query" placeholder="empty = msg.payload">
+    </div>
+    <div class="form-row">
+        <label for="node-input-context"><i class="fa fa-file-text"></i> Context</label>
+        <input type="text" id="node-input-context" placeholder="empty = msg.context">
+        <div class="form-tips">Runs <code>prolog-rlm rlm &lt;query&gt; --context &lt;context&gt; --json</code>. Output trace-envelope JSON is placed on <code>msg.payload</code>.</div>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="rlm">
+    <p>Run a Recursive Language Model query through the prolog-rlm runtime.</p>
+    <p>The query comes from the node configuration or <code>msg.payload</code>;
+       context comes from the node configuration or <code>msg.context</code>.</p>
+    <p>Output: the portable trace-envelope JSON document on <code>msg.payload</code>.</p>
+</script>

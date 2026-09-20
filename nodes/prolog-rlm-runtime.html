@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    RED.nodes.registerType('prolog-rlm-runtime', {
+        category: 'config',
+        color: '#7f8c8d',
+        defaults: {
+            name: { value: '' },
+            swipl: { value: 'swipl' },
+            rlmHome: { value: '', required: true },
+            model: { value: '' },
+            endpoint: { value: '' },
+            credentialEnv: { value: '' },
+            noCredential: { value: false },
+            maxTokens: { value: 0 },
+            maxCost: { value: '' },
+            timeLimit: { value: 0 },
+            contextBytes: { value: 0 },
+            hardTimeoutMs: { value: 0 }
+        },
+        label: function () {
+            return this.name || 'prolog-rlm-runtime';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="prolog-rlm-runtime">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-swipl"><i class="fa fa-terminal"></i> swipl</label>
+        <input type="text" id="node-config-input-swipl" placeholder="swipl">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-rlmHome"><i class="fa fa-folder"></i> prolog-rlm checkout</label>
+        <input type="text" id="node-config-input-rlmHome" placeholder="/path/to/prolog-rlm">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-model"><i class="fa fa-cube"></i> model</label>
+        <input type="text" id="node-config-input-model" placeholder="openrouter/free">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-endpoint"><i class="fa fa-globe"></i> endpoint</label>
+        <input type="text" id="node-config-input-endpoint" placeholder="http://127.0.0.1:8000/v1/chat/completions">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-credentialEnv"><i class="fa fa-key"></i> credential env var</label>
+        <input type="text" id="node-config-input-credentialEnv" placeholder="OPENAI_API_KEY">
+        <div class="form-tips">Only the environment variable <b>name</b> is stored. The value is read from the Node-RED process environment at runtime and never appears in flows or logs.</div>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-noCredential"><i class="fa fa-ban"></i> no credential</label>
+        <input type="checkbox" id="node-config-input-noCredential" style="width: auto">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-maxTokens"><i class="fa fa-sort-numeric-asc"></i> max tokens</label>
+        <input type="number" id="node-config-input-maxTokens" placeholder="256">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-maxCost"><i class="fa fa-dollar"></i> max cost (USD)</label>
+        <input type="text" id="node-config-input-maxCost" placeholder="0.25">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-timeLimit"><i class="fa fa-clock-o"></i> time limit (s)</label>
+        <input type="number" id="node-config-input-timeLimit" placeholder="120">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-contextBytes"><i class="fa fa-database"></i> context bytes</label>
+        <input type="number" id="node-config-input-contextBytes" placeholder="8192">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-hardTimeoutMs"><i class="fa fa-bomb"></i> hard kill (ms)</label>
+        <input type="number" id="node-config-input-hardTimeoutMs" placeholder="0 = derived from time limit">
+    </div>
+</script>
