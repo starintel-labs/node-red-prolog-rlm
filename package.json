@@ -1,0 +1,30 @@
+{
+  "name": "node-red-prolog-rlm",
+  "version": "0.1.0",
+  "description": "Node-RED nodes for the prolog-rlm SWI-Prolog RLM/agent runtime",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starintel-labs/node-red-prolog-rlm.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "keywords": [
+    "node-red",
+    "prolog",
+    "rlm",
+    "agent",
+    "starintel"
+  ],
+  "node-red": {
+    "nodes": {
+      "prolog-rlm-runtime": "nodes/prolog-rlm-runtime.js",
+      "rlm": "nodes/rlm.js",
+      "rlm-direct": "nodes/rlm-direct.js"
+    }
+  }
+}

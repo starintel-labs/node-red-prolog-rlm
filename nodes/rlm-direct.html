@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    RED.nodes.registerType('rlm-direct', {
+        category: 'prolog-rlm',
+        color: '#8e44ad',
+        defaults: {
+            name: { value: '' },
+            runtime: { type: 'prolog-rlm-runtime', required: true },
+            prompt: { value: '' }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'bridge.svg',
+        label: function () {
+            return this.name || 'rlm-direct';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="rlm-direct">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-runtime"><i class="fa fa-server"></i> Runtime</label>
+        <input type="text" id="node-input-runtime">
+    </div>
+    <div class="form-row">
+        <label for="node-input-prompt"><i class="fa fa-comment"></i> Prompt</label>
+        <input type="text" id="node-input-prompt" placeholder="empty = msg.payload">
+        <div class="form-tips">Runs <code>prolog-rlm direct &lt;prompt&gt; --json</code> (single completion, no RLM recursion).</div>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="rlm-direct">
+    <p>Run a direct single completion through the prolog-rlm runtime.</p>
+    <p>The prompt comes from the node configuration or <code>msg.payload</code>.</p>
+</script>
