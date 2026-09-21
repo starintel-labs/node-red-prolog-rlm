@@ -183,3 +183,26 @@ test('rlm-direct node works when loaded alone on its own RED view (loader isolat
   assert.strictEqual(result.err, undefined, result.err && result.err.message);
   assert.match(readCapture(cap).argv.join(' '), /direct solo/);
 });
+
+test('llm.starintel.actor provider preset resolves endpoint, credential env and model', async () => {
+  const cap = captureFile(null);
+  const restore = { ...process.env };
+  Object.assign(process.env, { FAKE_SWIPL_CAPTURE: cap, FAKE_SWIPL_MODE: 'ok' });
+  const RED = loadModules('nodes/prolog-rlm-runtime.js', 'nodes/rlm.js');
+  RED._nodesById.star = instantiate(RED, 'prolog-rlm-runtime', {
+    id: 'star',
+    swipl: fixturePath('fake-swipl'),
+    rlmHome: '/opt/prolog-rlm',
+    provider: 'llm.starintel.actor'
+  });
+  const node = instantiate(RED, 'rlm', { runtime: 'star', query: 'hi' });
+  const result = await driveInput(node, {});
+  for (const key of Object.keys(restore)) process.env[key] = restore[key];
+  delete process.env.FAKE_SWIPL_MODE;
+  delete process.env.FAKE_SWIPL_CAPTURE;
+  assert.strictEqual(result.err, undefined, result.err && result.err.message);
+  const argv = readCapture(cap).argv.join(' ');
+  assert.match(argv, /--endpoint https:\/\/llm\.starintel\.actor\/v1\/chat\/completions/);
+  assert.match(argv, /--credential-env STARINTEL_LLM_API_KEY/);
+  assert.match(argv, /--model qwen3-8b/);
+});
