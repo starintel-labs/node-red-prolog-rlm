@@ -1,7 +1,7 @@
 module.exports = function (RED) {
   'use strict';
 
-  const helpers = RED.nodes.prologRlm;
+  const helpers = require('../lib/prolog-rlm-subprocess');
 
   function RlmNode(config) {
     RED.nodes.createNode(this, config);

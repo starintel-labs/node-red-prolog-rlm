@@ -1,0 +1,71 @@
+[
+    {
+        "id": "ex-rlm-tab",
+        "type": "tab",
+        "label": "Hello prolog-rlm",
+        "disabled": false,
+        "info": "Minimal RLM walkthrough: an inject feeds a query to the rlm node, which shells out to the prolog-rlm CLI and returns the trace envelope. Configure the prolog-rlm-runtime config node first (swipl + a prolog-rlm checkout). The demo needs no credentials; live providers need the endpoint/credential-env settings."
+    },
+    {
+        "id": "ex-rlm-inject",
+        "type": "inject",
+        "z": "ex-rlm-tab",
+        "name": "ask the context",
+        "props": [
+            { "p": "payload" },
+            { "p": "context", "vt": "str" }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "What token is in this context?",
+        "payloadType": "str",
+        "context": "TOKEN_42",
+        "x": 210,
+        "y": 120,
+        "wires": [["ex-rlm-node"]]
+    },
+    {
+        "id": "ex-rlm-node",
+        "type": "rlm",
+        "z": "ex-rlm-tab",
+        "name": "rlm query",
+        "runtime": "ex-rlm-runtime",
+        "query": "",
+        "context": "",
+        "x": 430,
+        "y": 120,
+        "wires": [["ex-rlm-debug"]]
+    },
+    {
+        "id": "ex-rlm-debug",
+        "type": "debug",
+        "z": "ex-rlm-tab",
+        "name": "trace envelope",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 650,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ex-rlm-runtime",
+        "type": "prolog-rlm-runtime",
+        "name": "local prolog-rlm",
+        "swipl": "swipl",
+        "rlmHome": "/home/unseen/Documents/Projects/prolog-rlm",
+        "model": "",
+        "endpoint": "",
+        "credentialEnv": "",
+        "noCredential": false,
+        "maxTokens": 0,
+        "maxCost": "",
+        "timeLimit": 60,
+        "contextBytes": 8192,
+        "hardTimeoutMs": 90000
+    }
+]

@@ -138,13 +138,13 @@ test('rlm-direct node falls back to msg.payload', async () => {
 
 test('optional live lane: real prolog-rlm demo via RLM_E2E=1', { skip: process.env.RLM_E2E !== '1' }, async () => {
   const RED = loadModules('nodes/prolog-rlm-runtime.js');
+  const helpers = require('../lib/prolog-rlm-subprocess');
   const cfg = {
     id: 'rt-real',
     swipl: 'swipl',
     rlmHome: process.env.RLM_HOME,
     hardTimeoutMs: 120000
   };
-  const helpers = RED.nodes.prologRlm;
   await new Promise((resolve, reject) => {
     helpers.runPrologRlm(cfg, "demo", [], (err, envelope) => {
       if (err) return reject(err);
@@ -152,4 +152,34 @@ test('optional live lane: real prolog-rlm demo via RLM_E2E=1', { skip: process.e
       resolve();
     });
   });
+});
+
+test('rlm node works when loaded alone on its own RED view (loader isolation regression)', async () => {
+  const cap = captureFile(null);
+  const restore = { ...process.env };
+  Object.assign(process.env, { FAKE_SWIPL_CAPTURE: cap, FAKE_SWIPL_MODE: 'ok' });
+  const RED = loadModules('nodes/rlm.js');
+  RED._nodesById.rt1 = Object.assign({}, RUNTIME_CFG);
+  const node = instantiate(RED, 'rlm', { runtime: 'rt1', query: 'solo' });
+  const result = await driveInput(node, {});
+  for (const key of Object.keys(restore)) process.env[key] = restore[key];
+  delete process.env.FAKE_SWIPL_MODE;
+  delete process.env.FAKE_SWIPL_CAPTURE;
+  assert.strictEqual(result.err, undefined, result.err && result.err.message);
+  assert.match(readCapture(cap).argv.join(' '), /rlm solo/);
+});
+
+test('rlm-direct node works when loaded alone on its own RED view (loader isolation regression)', async () => {
+  const cap = captureFile(null);
+  const restore = { ...process.env };
+  Object.assign(process.env, { FAKE_SWIPL_CAPTURE: cap, FAKE_SWIPL_MODE: 'ok' });
+  const RED = loadModules('nodes/rlm-direct.js');
+  RED._nodesById.rt1 = Object.assign({}, RUNTIME_CFG);
+  const node = instantiate(RED, 'rlm-direct', { runtime: 'rt1', prompt: 'solo' });
+  const result = await driveInput(node, {});
+  for (const key of Object.keys(restore)) process.env[key] = restore[key];
+  delete process.env.FAKE_SWIPL_MODE;
+  delete process.env.FAKE_SWIPL_CAPTURE;
+  assert.strictEqual(result.err, undefined, result.err && result.err.message);
+  assert.match(readCapture(cap).argv.join(' '), /direct solo/);
 });

@@ -9,7 +9,7 @@
     {
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
-          packages = [ pkgs.nodejs_22 pkgs.swiProlog ];
+          packages = [ pkgs.nodejs_22 pkgs.swi-prolog ];
         };
       });
 
