@@ -4,6 +4,7 @@
         color: '#7f8c8d',
         defaults: {
             name: { value: '' },
+            provider: { value: 'custom' },
             swipl: { value: 'swipl' },
             rlmHome: { value: '', required: true },
             model: { value: '' },
@@ -34,6 +35,14 @@
     <div class="form-row">
         <label for="node-config-input-rlmHome"><i class="fa fa-folder"></i> prolog-rlm checkout</label>
         <input type="text" id="node-config-input-rlmHome" placeholder="/path/to/prolog-rlm">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-provider"><i class="fa fa-bolt"></i> Provider</label>
+        <select id="node-config-input-provider">
+            <option value="custom">custom (fields below)</option>
+            <option value="llm.starintel.actor">llm.starintel.actor (qwen3-8b, STARINTEL_LLM_API_KEY)</option>
+        </select>
+        <div class="form-tips">llm.starintel.actor is the StarIntel local inference host (OpenAI-compatible; qwen3-8b chat, qwen38-27b heavy). The API key is read from the named environment variable at runtime and never stored.</div>
     </div>
     <div class="form-row">
         <label for="node-config-input-model"><i class="fa fa-cube"></i> model</label>

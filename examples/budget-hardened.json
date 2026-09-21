@@ -1,0 +1,80 @@
+[
+ {
+  "id": "t-budget-hardened",
+  "type": "tab",
+  "label": "rlm: tight budgets",
+  "disabled": false,
+  "info": "Time/cost/token budgets flow to both the CLI flags and the JS-side hard kill."
+ },
+ {
+  "id": "n-budget-hardened-0",
+  "type": "inject",
+  "z": "t-budget-hardened",
+  "x": 180,
+  "y": 120,
+  "wires": [
+   [
+    "n-budget-hardened-1"
+   ]
+  ],
+  "name": "ask",
+  "props": [
+   {
+    "p": "payload"
+   }
+  ],
+  "repeat": "",
+  "crontab": "",
+  "once": false,
+  "topic": "",
+  "payload": "one short sentence about dns",
+  "payloadType": "str"
+ },
+ {
+  "id": "n-budget-hardened-1",
+  "type": "rlm",
+  "z": "t-budget-hardened",
+  "x": 400,
+  "y": 120,
+  "wires": [
+   [
+    "n-budget-hardened-2"
+   ]
+  ],
+  "name": "rlm",
+  "runtime": "cfg-budget-hardened",
+  "query": "",
+  "context": ""
+ },
+ {
+  "id": "n-budget-hardened-2",
+  "type": "debug",
+  "z": "t-budget-hardened",
+  "x": 620,
+  "y": 120,
+  "wires": [],
+  "name": "envelope",
+  "active": true,
+  "tosidebar": true,
+  "console": false,
+  "complete": "payload",
+  "targetType": "msg"
+ },
+ {
+  "type": "prolog-rlm-runtime",
+  "name": "runtime",
+  "swipl": "swipl",
+  "rlmHome": "/home/unseen/Documents/Projects/prolog-rlm",
+  "provider": "custom",
+  "model": "",
+  "endpoint": "",
+  "credentialEnv": "",
+  "noCredential": false,
+  "maxTokens": 64,
+  "maxCost": "0.02",
+  "timeLimit": 20,
+  "contextBytes": 8192,
+  "hardTimeoutMs": 35000,
+  "id": "cfg-budget-hardened"
+ }
+]

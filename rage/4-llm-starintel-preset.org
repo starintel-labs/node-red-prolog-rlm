@@ -1,0 +1,4 @@
+* Run identity
+- Consumed issue :: #4
+- Branch :: =rage/4-llm-starintel-preset=
+- RAGE start commit :: =7060f372c9ae1467e2d9142e091c2216dca87382=

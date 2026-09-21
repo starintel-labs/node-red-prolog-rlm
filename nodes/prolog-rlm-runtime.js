@@ -3,13 +3,23 @@ module.exports = function (RED) {
 
   const helpers = require('../lib/prolog-rlm-subprocess');
 
+  const PROVIDER_PRESETS = {
+    'llm.starintel.actor': {
+      endpoint: 'https://llm.starintel.actor/v1/chat/completions',
+      credentialEnv: 'STARINTEL_LLM_API_KEY',
+      model: 'qwen3-8b'
+    }
+  };
+
   function PrologRlmRuntimeNode(config) {
     RED.nodes.createNode(this, config);
+    const preset = PROVIDER_PRESETS[config.provider];
     this.swipl = config.swipl || 'swipl';
     this.rlmHome = config.rlmHome || '';
-    this.model = config.model || '';
-    this.endpoint = config.endpoint || '';
-    this.credentialEnv = config.credentialEnv || '';
+    this.provider = config.provider || 'custom';
+    this.model = config.model || (preset && preset.model) || '';
+    this.endpoint = config.endpoint || (preset && preset.endpoint) || '';
+    this.credentialEnv = config.credentialEnv || (preset && preset.credentialEnv) || '';
     this.noCredential = !!config.noCredential;
     this.maxTokens = config.maxTokens || 0;
     this.maxCost = config.maxCost || '';
